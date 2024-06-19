@@ -8,6 +8,11 @@ pipeline {
         TEMP_DIR = './temp'  // Katalog tymczasowy
     }
 
+    tools {
+        // Definiujesz tutaj instalację CMake, którą dodałeś w konfiguracji Jenkinsa
+        cmake 'CMake 3.21.3'
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -19,7 +24,7 @@ pipeline {
             steps {
                 sh "mkdir -p ${TEMP_DIR}"  // Tworzenie katalogu tymczasowego
                 dir(TEMP_DIR) {
-                    sh 'cmake ../cpp-project'  // Dopasuj ścieżkę do repozytorium
+                    sh 'cmake ../cpp-project'  // Użyj zainstalowanej w Jenkinsie wersji CMake
                     sh 'make'
                 }
             }
