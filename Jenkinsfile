@@ -5,11 +5,11 @@ pipeline {
         PATH = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
         CC = 'gcc'
         CXX = 'g++'
-        TEMP_DIR = './temp'  // Katalog tymczasowy
+        TEMP_DIR = './temp'  // Temporary directory
     }
 
     tools {
-        // Konfigurujemy narzędzie CMake za pomocą właściwego typu
+        // Define CMake tool installation
         cmake 'CMake 3.29.6'
     }
 
@@ -22,10 +22,9 @@ pipeline {
         
         stage('Compile') {
             steps {
-                sh "mkdir -p ${TEMP_DIR}"  // Tworzenie katalogu tymczasowego
+                sh "mkdir -p ${TEMP_DIR}"  // Create temporary directory
                 dir(TEMP_DIR) {
-                    // Używamy zainstalowanej wersji CMake
-                    sh 'cmake ../cpp-project'
+                    sh 'cmake ../cpp-project'  // Adjust path to match your repository structure
                     sh 'make'
                 }
             }
