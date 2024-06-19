@@ -8,10 +8,10 @@ pipeline {
         TEMP_DIR = './temp'  // Temporary directory
     }
 
-    tools {
-        // Define CMake tool installation
-        cmake 'CMake 3.29.6'
-    }
+    // tools {
+    //     // Define CMake tool installation
+    //     cmake 'CMake 3.29.6'
+    // }
 
     stages {
         stage('Checkout') {
