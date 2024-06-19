@@ -5,6 +5,7 @@ pipeline {
         PATH = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
         CC = 'gcc'
         CXX = 'g++'
+        TEMP_DIR = './temp'  // Katalog tymczasowy
     }
 
     stages {
@@ -13,46 +14,55 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/MarMarcz/cpp-project'
             }
         }
+        
         stage('Compile') {
             steps {
-                sh 'mkdir build'
-                dir('build') {
-                    sh 'cmake ../'
+                sh "mkdir -p ${TEMP_DIR}"  // Tworzenie katalogu tymczasowego
+                dir(TEMP_DIR) {
+                    sh 'cmake ../cpp-project'  // Dopasuj ścieżkę do repozytorium
                     sh 'make'
                 }
             }
         }
+
         stage('Unit Tests') {
             steps {
-                dir('build') {
+                dir(TEMP_DIR) {
                     sh 'ctest --output-on-failure'
                 }
             }
         }
+
         stage('Code Coverage') {
             steps {
-                dir('build') {
+                dir(TEMP_DIR) {
                     sh 'gcovr --root=. --xml --output=coverage.xml'
-                    publishHTML([
-                        allowMissing: false, 
-                        alwaysLinkToLastBuild: true, 
-                        keepAll: true, 
-                        reportName: 'Code Coverage Report',  // Dodaj nazwę raportu
-                        reportDir: '.', 
-                        reportFiles: 'coverage.xml'
+                    publishHTML(target: [
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: '.',
+                        reportFiles: 'coverage.xml',
+                        reportName: 'Code Coverage Report'
                     ])
                 }
             }
         }
+
         stage('Static Code Analysis') {
             steps {
-                sh 'cppcheck --enable=all src' // analiza statyczna kodu za pomocą cppcheck
+                dir('cpp-project') {
+                    sh 'cppcheck --enable=all src'
+                }
             }
         }
+
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh 'sonar-scanner'
+                dir('cpp-project') {
+                    withSonarQubeEnv('SonarQube') {
+                        sh 'sonar-scanner'
+                    }
                 }
             }
         }
