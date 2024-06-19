@@ -5,25 +5,19 @@ pipeline {
         PATH = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
         CC = 'gcc'
         CXX = 'g++'
-        TEMP_DIR = './temp'  // Temporary directory
+        TEMP_DIR = '/var/jenkins_home/workspace/cpp-project/temp'  // Absolute temporary directory path
     }
-
-    // tools {
-    //     // Define CMake tool installation
-    //     cmake 'CMake 3.29.6'
-    // }
 
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/MarMarcz/cpp-project'
+                checkout scm
             }
         }
         
         stage('Compile') {
             steps {
-                // Skonfiguruj środowisko do kompilacji aplikacji C++
-                sh 'make clean' // Przykład dla makefile
+                sh 'make clean'  // Example for makefile
                 sh 'make'
             }
         }
