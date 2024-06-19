@@ -10,7 +10,7 @@ pipeline {
 
     tools {
         // Konfigurujemy narzędzie CMake za pomocą właściwego typu
-        cmake 'CMake 3.21.3'
+        cmake 'CMake 3.29.6'
     }
 
     stages {
