@@ -15,6 +15,19 @@ pipeline {
             }
         }
         
+        stage('Install Dependencies') {
+            steps {
+                script {
+                    // Instalacja narzędzi kompilacyjnych dla systemu Unix
+                    if (isUnix()) {
+                        sh 'apt-get update && apt-get install -y build-essential'
+                    } else {
+                        error "Installation steps for non-Unix systems are not defined."
+                    }
+                }
+            }
+        }
+
         stage('Compile') {
             steps {
                 sh 'make clean'  // Example for makefile
