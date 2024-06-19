@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/MarMarcz/cpp-project'
+                git branch: 'main', url: 'https://github.com/MarMarcz/cpp-project'
             }
         }
         stage('Compile') {
