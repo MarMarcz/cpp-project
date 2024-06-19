@@ -33,7 +33,14 @@ pipeline {
             steps {
                 dir('build') {
                     sh 'gcovr --root=. --xml --output=coverage.xml'
-                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: true, reportDir: '.', reportFiles: 'coverage.xml'])
+                    publishHTML([
+                        allowMissing: false, 
+                        alwaysLinkToLastBuild: true, 
+                        keepAll: true, 
+                        reportName: 'Code Coverage Report',  // Dodaj nazwę raportu
+                        reportDir: '.', 
+                        reportFiles: 'coverage.xml'
+                    ])
                 }
             }
         }
