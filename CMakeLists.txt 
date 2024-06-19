@@ -1,0 +1,13 @@
+cmake_minimum_required(VERSION 3.10)
+project(MyCppProject)
+
+# Ustaw opcje kompilacji
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Dodaj pliki źródłowe projektu
+add_executable(my_app src/main.cpp src/funkcje.cpp)
+
+# Konfiguracja testów
+enable_testing()
+add_subdirectory(tests)
