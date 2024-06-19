@@ -22,11 +22,9 @@ pipeline {
         
         stage('Compile') {
             steps {
-                sh "mkdir -p ${TEMP_DIR}"  // Create temporary directory
-                dir(TEMP_DIR) {
-                    sh 'cmake ../cpp-project'  // Adjust path to match your repository structure
-                    sh 'make'
-                }
+                // Skonfiguruj środowisko do kompilacji aplikacji C++
+                sh 'make clean' // Przykład dla makefile
+                sh 'make'
             }
         }
 
