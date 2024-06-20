@@ -2,8 +2,9 @@ version: '3'
 
 services:
   jenkins:
-    build: .  # Budowanie obrazu z bieżącego katalogu
+    image: jenkins/jenkins:lts
     container_name: jenkins-new
+    user: root
     ports:
       - "8080:8080"
     volumes:
