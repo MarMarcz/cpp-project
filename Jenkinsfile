@@ -14,6 +14,15 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/MarMarcz/cpp-project'
             }
         }
+
+                stage('Prepare Environment') {
+            steps {
+                script {
+                    sh 'apt-get update'
+                    sh 'apt-get install -y build-essential cmake gcovr cppcheck'
+                }
+            }
+        }
         
         stage('Install Dependencies') {
             steps {
