@@ -10,10 +10,14 @@ pipeline {
 
     stages {
         stage('Checkout') {
-            steps {
-                git branch: 'main', url: 'https://github.com/MarMarcz/cpp-project'
-            }
-        }
+                    steps {
+                        git branch: 'main', url: 'https://github.com/MarMarcz/cpp-project'
+                        script {
+                            sh 'echo "Current workspace contents:"'
+                            sh 'ls -la ${WORKSPACE}'
+                        }
+                    }
+                }
         
         stage('Install Dependencies') {
             steps {
