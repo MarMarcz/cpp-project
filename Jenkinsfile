@@ -61,25 +61,35 @@ pipeline {
 
         stage('Unit Tests') {
             steps {
-                sh 'ctest --output-on-failure'
+                script {
+                    sh '''
+                        cd build
+                        ctest --output-on-failure
+                    '''
+                }
             }
         }
 
         stage('Code Coverage') {
             steps {
-                sh 'gcovr --root=. --xml --output=coverage.xml'
-                publishHTML(target: [
-                    allowMissing: false,
-                    alwaysLinkToLastBuild: true,
-                    keepAll: true,
-                    reportDir: '.',
-                    reportFiles: 'coverage.xml',
-                    reportName: 'Code Coverage Report'
-                ])
+                script {
+                    sh '''
+                        cd build
+                        gcovr --root=. --xml --output=coverage.xml
+                    '''
+                    publishHTML(target: [
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: 'build',
+                        reportFiles: 'coverage.xml',
+                        reportName: 'Code Coverage Report'
+                    ])
+                }
             }
         }
 
-stage('Static Code Analysis') {
+        stage('Static Code Analysis') {
             steps {
                 sh 'cppcheck --enable=all --include=src --include=tests src'
             }
