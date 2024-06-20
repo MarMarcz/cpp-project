@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'marmar37/cpp:latest'  // Tutaj podaj nazwę użytkownika na Docker Hub i nazwę obrazu oraz tag
-            args '-v /var/run/docker.sock:/var/run/docker.sock'  // Opcjonalne mapowanie Docker socketa, jeśli potrzebujesz
-        }
-    }
+    agent any
 
     environment {
         PATH = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
