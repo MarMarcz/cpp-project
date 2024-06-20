@@ -79,9 +79,9 @@ pipeline {
             }
         }
 
-        stage('Static Code Analysis') {
+stage('Static Code Analysis') {
             steps {
-                sh 'cppcheck --enable=all src'
+                sh 'cppcheck --enable=all --include=src --include=tests src'
             }
         }
 
