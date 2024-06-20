@@ -29,11 +29,15 @@ pipeline {
         }
 
         stage('Compile') {
-            steps {
-                sh 'make clean'  // Example for makefile
-                sh 'make'
-            }
-        }
+                    steps {
+                        sh '''
+                            mkdir -p build
+                            cd build
+                            cmake ..
+                            cmake --build .
+                        '''
+                    }
+                }
 
         stage('Unit Tests') {
             steps {
