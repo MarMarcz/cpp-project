@@ -29,15 +29,26 @@ pipeline {
         }
 
         stage('Compile') {
-                    steps {
-                        sh '''
-                            mkdir -p build
-                            cd build
-                            cmake ..
-                            cmake --build .
-                        '''
-                    }
+            steps {
+                script {
+                    sh '''
+                        # Ensure we're in the workspace directory where CMakeLists.txt is located
+                        cd ${WORKSPACE}
+                        
+                        # Verify the location of CMakeLists.txt
+                        if [ ! -f CMakeLists.txt ]; then
+                            echo "CMakeLists.txt not found in workspace directory"
+                            exit 1
+                        fi
+
+                        mkdir -p build
+                        cd build
+                        cmake ..
+                        cmake --build .
+                    '''
                 }
+            }
+        }
 
         stage('Unit Tests') {
             steps {
