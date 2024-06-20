@@ -14,22 +14,13 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/MarMarcz/cpp-project'
             }
         }
-
-                stage('Prepare Environment') {
-            steps {
-                script {
-                    sh 'apt-get update'
-                    sh 'apt-get install -y build-essential cmake gcovr cppcheck'
-                }
-            }
-        }
         
         stage('Install Dependencies') {
             steps {
                 script {
                     // Instalacja narzędzi kompilacyjnych dla systemu Unix
                     if (isUnix()) {
-                        sh 'apt-get update && apt-get install -y build-essential cmake gcovr cppcheck'
+                        sh 'sudo apt-get update && apt-get install -y build-essential cmake gcovr cppcheck'
                     } else {
                         error "Installation steps for non-Unix systems are not defined."
                     }
