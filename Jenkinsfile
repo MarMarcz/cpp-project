@@ -7,12 +7,10 @@ pipeline {
         CXX = 'g++'  // Kompilator C++
     }
 
-         stage('Checkout') {
+    stages {
+        stage('Checkout') {
             steps {
-                sh 'pwd'
-                sh 'ls -la'
                 git branch: 'main', url: 'https://github.com/MarMarcz/cpp-project'
-                sh 'git rev-parse --is-inside-work-tree'
             }
         }
 
