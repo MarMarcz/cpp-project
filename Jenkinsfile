@@ -20,7 +20,7 @@ pipeline {
                 script {
                     // Instalacja narzędzi kompilacyjnych dla systemu Unix
                     if (isUnix()) {
-                        sh 'apt-get update && apt-get install -y build-essential cmake gcovr cppcheck'
+                        sh 'sudo apt-get update && sudo apt-get install -y build-essential cmake gcovr cppcheck'
                     } else {
                         error "Installation steps for non-Unix systems are not defined."
                     }
