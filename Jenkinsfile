@@ -7,15 +7,12 @@ pipeline {
         CXX = 'g++'  // Kompilator C++
     }
 
-    stages {
-        stage('Checkout') {
+         stage('Checkout') {
             steps {
-                checkout([$class: 'GitSCM', 
-                          branches: [[name: '*/main']], 
-                          doGenerateSubmoduleConfigurations: false, 
-                          extensions: [], 
-                          submoduleCfg: [], 
-                          userRemoteConfigs: [[url: 'https://github.com/MarMarcz/cpp-project']]])
+                sh 'pwd'
+                sh 'ls -la'
+                git branch: 'main', url: 'https://github.com/MarMarcz/cpp-project'
+                sh 'git rev-parse --is-inside-work-tree'
             }
         }
 
