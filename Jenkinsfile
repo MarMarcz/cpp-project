@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                git branch: 'main', url: 'https://github.com/MarMarcz/cpp-project'
             }
         }
         
@@ -20,7 +20,7 @@ pipeline {
                 script {
                     // Instalacja narzędzi kompilacyjnych dla systemu Unix
                     if (isUnix()) {
-                        sh 'apt-get update && apt-get install -y build-essential'
+                        sh 'apt-get update && apt-get install -y build-essential cmake gcovr cppcheck'
                     } else {
                         error "Installation steps for non-Unix systems are not defined."
                     }
@@ -37,41 +37,35 @@ pipeline {
 
         stage('Unit Tests') {
             steps {
-                dir(TEMP_DIR) {
-                    sh 'ctest --output-on-failure'
-                }
+                sh 'ctest --output-on-failure'
             }
         }
 
         stage('Code Coverage') {
             steps {
-                dir(TEMP_DIR) {
-                    sh 'gcovr --root=. --xml --output=coverage.xml'
-                    publishHTML(target: [
-                        allowMissing: false,
-                        alwaysLinkToLastBuild: true,
-                        keepAll: true,
-                        reportDir: '.',
-                        reportFiles: 'coverage.xml',
-                        reportName: 'Code Coverage Report'
-                    ])
-                }
+                sh 'gcovr --root=. --xml --output=coverage.xml'
+                publishHTML(target: [
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: '.',
+                    reportFiles: 'coverage.xml',
+                    reportName: 'Code Coverage Report'
+                ])
             }
         }
 
         stage('Static Code Analysis') {
             steps {
-                dir('cpp-project') {
-                    sh 'cppcheck --enable=all src'
-                }
+                sh 'cppcheck --enable=all src'
             }
         }
 
         stage('SonarQube Analysis') {
             steps {
-                dir('cpp-project') {
+                withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
                     withSonarQubeEnv('SonarQube') {
-                        sh 'sonar-scanner'
+                        sh 'sonar-scanner -Dsonar.login=$SONAR_TOKEN'
                     }
                 }
             }
