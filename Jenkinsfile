@@ -33,27 +33,31 @@ pipeline {
         }
 
         stage('Compile') {
-            steps {
-                script {
-                    sh '''
-                        # Ensure we're in the workspace directory where CMakeLists.txt is located
-                        cd ${WORKSPACE}
-                        echo "Current directory contents:"
-                        ls -la
-                        # Verify the location of CMakeLists.txt
-                        if [ ! -f CMakeLists.txt ]; then
-                            echo "CMakeLists.txt not found in workspace directory"
-                            exit 1
-                        fi
+                    steps {
+                        script {
+                            sh '''
+                                echo "Entering workspace directory"
+                                cd ${WORKSPACE}
 
-                        mkdir -p build
-                        cd build
-                        cmake ..
-                        cmake --build .
-                    '''
+                                echo "Current directory contents:"
+                                ls -la
+
+                                if [ -f ${WORKSPACE}/CMakeLists.txt ]; then
+                                    echo "CMakeLists.txt found in workspace directory"
+                                else
+                                    echo "CMakeLists.txt not found in workspace directory"
+                                    exit 1
+                                fi
+
+                                echo "Creating build directory"
+                                mkdir -p build
+                                cd build
+                                cmake ..
+                                cmake --build .
+                            '''
+                        }
+                    }
                 }
-            }
-        }
 
         stage('Unit Tests') {
             steps {
