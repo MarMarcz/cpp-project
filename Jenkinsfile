@@ -40,7 +40,7 @@ pipeline {
                                 cd ${WORKSPACE}
 
                                 echo "Current directory contents:"
-                                ls -la
+                                ls -l
 
                                 if [ -f ${WORKSPACE}/CMakeLists.txt ]; then
                                     echo "CMakeLists.txt found in workspace directory"
