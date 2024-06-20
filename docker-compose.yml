@@ -2,7 +2,7 @@ version: '3'
 
 services:
   jenkins:
-    image: moj-obraz-jenkinsa  # Ustaw nazwę twojego zbudowanego obrazu Jenkinsa
+    image: marmar37/cpp #moj-obraz-jenkinsa  # Ustaw nazwę twojego zbudowanego obrazu Jenkinsa
     container_name: jenkins-new
     ports:
       - "8080:8080"
