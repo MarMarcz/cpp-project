@@ -64,6 +64,7 @@ pipeline {
                 script {
                     sh '''
                         cd build
+                        ls -la
                         ctest --output-on-failure
                     '''
                 }
