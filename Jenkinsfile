@@ -8,12 +8,23 @@ pipeline {
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                checkout([$class: 'GitSCM', 
+                          branches: [[name: '*/main']], 
+                          doGenerateSubmoduleConfigurations: false, 
+                          extensions: [], 
+                          submoduleCfg: [], 
+                          userRemoteConfigs: [[url: 'https://github.com/MarMarcz/cpp-project']]])
+            }
+        }
+
         stage('Install Dependencies') {
             steps {
                 script {
                     // Instalacja narzędzi kompilacyjnych i inne zależności
                     if (isUnix()) {
-                        sh 'apt-get update && apt-get install -y build-essential cmake'
+                        sh 'apt-get update && apt-get install -y build-essential cmake gcovr cppcheck'
                     } else {
                         error "Installation steps for non-Unix systems are not defined."
                     }
