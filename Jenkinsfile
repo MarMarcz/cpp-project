@@ -5,7 +5,7 @@ pipeline {
         PATH = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
         CC = 'gcc'
         CXX = 'g++'
-        TEMP_DIR = '/var/jenkins_home/workspace/cpp-project/temp'  // Absolute temporary directory path
+        TEMP_DIR = '/var/jenkins_home/workspace/cpp-project/temp'  // Absolute temporary directory path /var/jenkins_home/workspace/lab12ex2
     }
 
     stages {
@@ -38,7 +38,8 @@ pipeline {
                     sh '''
                         # Ensure we're in the workspace directory where CMakeLists.txt is located
                         cd ${WORKSPACE}
-                        
+                        echo "Current directory contents:"
+                        ls -la
                         # Verify the location of CMakeLists.txt
                         if [ ! -f CMakeLists.txt ]; then
                             echo "CMakeLists.txt not found in workspace directory"
