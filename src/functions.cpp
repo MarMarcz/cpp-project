@@ -1,5 +1,3 @@
-// functions.cpp
-
 #include "functions.h"
 
 int add(int a, int b) {

@@ -1,11 +1,7 @@
 #include <iostream>
+#include "functions.h" // Include the header file where add is declared
 
-// Przykładowa funkcja dodająca dwie liczby
-int add(int a, int b) {
-    return a + b;
-}
-
-// Funkcja main
+// Function main
 int main() {
     int num1 = 5;
     int num2 = 3;
