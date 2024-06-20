@@ -3,8 +3,9 @@ pipeline {
 
     environment {
         PATH = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-        CC = 'gcc'   // Kompilator C
-        CXX = 'g++'  // Kompilator C++
+        CC = 'gcc'
+        CXX = 'g++'
+        TEMP_DIR = '/var/jenkins_home/workspace/cpp-project/temp'  // Absolute temporary directory path
     }
 
     stages {
@@ -13,11 +14,11 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/MarMarcz/cpp-project'
             }
         }
-
+        
         stage('Install Dependencies') {
             steps {
                 script {
-                    // Instalacja narzędzi kompilacyjnych i inne zależności
+                    // Instalacja narzędzi kompilacyjnych dla systemu Unix
                     if (isUnix()) {
                         sh 'apt-get update && apt-get install -y build-essential cmake gcovr cppcheck'
                     } else {
@@ -29,21 +30,19 @@ pipeline {
 
         stage('Compile') {
             steps {
-                sh 'make clean'  // Czyszczenie wcześniejszych kompilacji (jeśli używasz make)
-                sh 'make'        // Kompilacja kodu
+                sh 'make clean'  // Example for makefile
+                sh 'make'
             }
         }
 
         stage('Unit Tests') {
             steps {
-                // Wykonanie testów jednostkowych, np. przy użyciu ctest
                 sh 'ctest --output-on-failure'
             }
         }
 
         stage('Code Coverage') {
             steps {
-                // Generowanie raportu pokrycia kodu, np. przy użyciu gcovr
                 sh 'gcovr --root=. --xml --output=coverage.xml'
                 publishHTML(target: [
                     allowMissing: false,
@@ -58,14 +57,12 @@ pipeline {
 
         stage('Static Code Analysis') {
             steps {
-                // Analiza statyczna kodu, np. przy użyciu cppcheck
                 sh 'cppcheck --enable=all src'
             }
         }
 
         stage('SonarQube Analysis') {
             steps {
-                // Konfiguracja SonarQube i wysłanie kodu do analizy
                 withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
                     withSonarQubeEnv('SonarQube') {
                         sh 'sonar-scanner -Dsonar.login=$SONAR_TOKEN'
